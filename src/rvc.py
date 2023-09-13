@@ -17,11 +17,25 @@ from vc_infer_pipeline import VC
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
+# config cpu
+def use_fp32_config():
+    for config_file in [
+        "32k.json",
+        "40k.json",
+        "48k.json",
+        "48k_v2.json",
+        "32k_v2.json",
+    ]:
+        with open(f"configs/{config_file}", "r") as f:
+            strr = f.read().replace("true", "false")
+        with open(f"configs/{config_file}", "w") as f:
+            f.write(strr)
+
 class Config:
     def __init__(self, device, is_half):
         self.device = device
         self.is_half = is_half
-        self.n_cpu = 0
+        self.n_cpu = 2 # set cpu cores
         self.gpu_name = None
         self.gpu_mem = None
         self.x_pad, self.x_query, self.x_center, self.x_max = self.device_config()
@@ -69,6 +83,7 @@ class Config:
             print("No supported N-card found, use CPU for inference")
             self.device = "cpu"
             self.is_half = True
+            use_fp32_config() # cpu config
 
         if self.n_cpu == 0:
             self.n_cpu = cpu_count()
