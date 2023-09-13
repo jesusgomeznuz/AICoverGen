@@ -166,6 +166,8 @@ class MDX:
             waves = np.array(wave_p[:, i:i + self.model.chunk_size])
             mix_waves.append(waves)
 
+        print(self.device)
+
         mix_waves = torch.tensor(mix_waves, dtype=torch.float32).to(self.device)
 
         return mix_waves, pad, trim
@@ -240,7 +242,7 @@ def run_mdx(model_params, output_dir, model_path, filename, exclude_main=False, 
 
     #device_properties = torch.cuda.get_device_properties(device)
     print("Device", device)
-    vram_gb = 6 #device_properties.total_memory / 1024**3
+    vram_gb = 12 #device_properties.total_memory / 1024**3
     m_threads = 1 if vram_gb < 8 else 2
 
     model_hash = MDX.get_hash(model_path)
