@@ -239,6 +239,7 @@ def run_mdx(model_params, output_dir, model_path, filename, exclude_main=False, 
     device = torch.device('cuda:0') if torch.cuda.is_available() else torch.device('cpu')
 
     #device_properties = torch.cuda.get_device_properties(device)
+    print("Device", device)
     vram_gb = 6 #device_properties.total_memory / 1024**3
     m_threads = 1 if vram_gb < 8 else 2
 
