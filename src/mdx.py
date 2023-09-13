@@ -65,7 +65,8 @@ class MDX:
     def __init__(self, model_path: str, params: MDXModel, processor=DEFAULT_PROCESSOR):
 
         # Set the device and the provider (CPU or CUDA)
-        self.device = torch.device(f'cuda:{processor}') if processor >= 0 else torch.device('cpu')
+        #self.device = torch.device(f'cuda:{processor}') if processor >= 0 else torch.device('cpu')
+        device = torch.device('cuda:0') if torch.cuda.is_available() else torch.device('cpu')
         self.provider = ['CUDAExecutionProvider'] if processor >= 0 else ['CPUExecutionProvider']
 
         self.model = params
