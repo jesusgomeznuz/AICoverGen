@@ -66,9 +66,10 @@ class MDX:
 
         # Set the device and the provider (CPU or CUDA)
         #self.device = torch.device(f'cuda:{processor}') if processor >= 0 else torch.device('cpu')
-        device = torch.device('cuda:0') if torch.cuda.is_available() else torch.device('cpu')
-        self.provider = ['CUDAExecutionProvider'] if processor >= 0 else ['CPUExecutionProvider']
-
+        self.device = torch.device('cuda:0') if torch.cuda.is_available() else torch.device('cpu')
+        #self.provider = ['CUDAExecutionProvider'] if processor >= 0 else ['CPUExecutionProvider']
+        self.provider = ['CPUExecutionProvider']
+        
         self.model = params
 
         # Load the ONNX model using ONNX Runtime
