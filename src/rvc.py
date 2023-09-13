@@ -26,9 +26,9 @@ def use_fp32_config():
         "48k_v2.json",
         "32k_v2.json",
     ]:
-        with open(f"configs/{config_file}", "r") as f:
+        with open(f"src/configs/{config_file}", "r") as f:
             strr = f.read().replace("true", "false")
-        with open(f"configs/{config_file}", "w") as f:
+        with open(f"src/configs/{config_file}", "w") as f:
             f.write(strr)
 
 class Config:
