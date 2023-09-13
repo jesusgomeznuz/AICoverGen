@@ -1,8 +1,7 @@
-import numpy as np
-import torch
+import torch, numpy as np
 import torch.nn as nn
 import torch.nn.functional as F
-from librosa.filters import mel
+
 
 
 class BiGRU(nn.Module):
@@ -248,7 +247,7 @@ class E2E(nn.Module):
             )
         else:
             self.fc = nn.Sequential(
-                nn.Linear(3 * N_MELS, N_CLASS), nn.Dropout(0.25), nn.Sigmoid()
+                nn.Linear(3 * nn.N_MELS, nn.N_CLASS), nn.Dropout(0.25), nn.Sigmoid()
             )
 
     def forward(self, mel):
@@ -256,6 +255,9 @@ class E2E(nn.Module):
         x = self.cnn(self.unet(mel)).transpose(1, 2).flatten(-2)
         x = self.fc(x)
         return x
+
+
+from librosa.filters import mel
 
 
 class MelSpectrogram(torch.nn.Module):
@@ -384,8 +386,8 @@ class RMVPE:
 
     def to_local_average_cents(self, salience, thred=0.05):
         # t0 = ttime()
-        center = np.argmax(salience, axis=1)  # 帧长#index
-        salience = np.pad(salience, ((0, 0), (4, 4)))  # 帧长,368
+        center = np.argmax(salience, axis=1)  # frame length#index
+        salience = np.pad(salience, ((0, 0), (4, 4)))  # frame length,368
         # t1 = ttime()
         center += 4
         todo_salience = []
@@ -396,14 +398,35 @@ class RMVPE:
             todo_salience.append(salience[:, starts[idx] : ends[idx]][idx])
             todo_cents_mapping.append(self.cents_mapping[starts[idx] : ends[idx]])
         # t2 = ttime()
-        todo_salience = np.array(todo_salience)  # 帧长，9
-        todo_cents_mapping = np.array(todo_cents_mapping)  # 帧长，9
+        todo_salience = np.array(todo_salience)  # frame length，9
+        todo_cents_mapping = np.array(todo_cents_mapping)  # frame length，9
         product_sum = np.sum(todo_salience * todo_cents_mapping, 1)
-        weight_sum = np.sum(todo_salience, 1)  # 帧长
-        devided = product_sum / weight_sum  # 帧长
+        weight_sum = np.sum(todo_salience, 1)  # frame length
+        devided = product_sum / weight_sum  # frame length
         # t3 = ttime()
-        maxx = np.max(salience, axis=1)  # 帧长
+        maxx = np.max(salience, axis=1)  # frame length
         devided[maxx <= thred] = 0
         # t4 = ttime()
         # print("decode:%s\t%s\t%s\t%s" % (t1 - t0, t2 - t1, t3 - t2, t4 - t3))
         return devided
+
+
+# if __name__ == '__main__':
+#     audio, sampling_rate = sf.read("Quotations~1.wav") ### edit
+#     if len(audio.shape) > 1:
+#         audio = librosa.to_mono(audio.transpose(1, 0))
+#     audio_bak = audio.copy()
+#     if sampling_rate != 16000:
+#         audio = librosa.resample(audio, orig_sr=sampling_rate, target_sr=16000)
+#     model_path = "/bili-coeus/jupyter/jupyterhub-liujing04/vits_ch/test-RMVPE/weights/rmvpe_llc_half.pt"
+#     thred = 0.03  # 0.01
+#     device = 'cuda' if torch.cuda.is_available() else 'cpu'
+#     rmvpe = RMVPE(model_path,is_half=False, device=device)
+#     t0=ttime()
+#     f0 = rmvpe.infer_from_audio(audio, thred=thred)
+#     f0 = rmvpe.infer_from_audio(audio, thred=thred)
+#     f0 = rmvpe.infer_from_audio(audio, thred=thred)
+#     f0 = rmvpe.infer_from_audio(audio, thred=thred)
+#     f0 = rmvpe.infer_from_audio(audio, thred=thred)
+#     t1=ttime()
+#     print(f0.shape,t1-t0)
