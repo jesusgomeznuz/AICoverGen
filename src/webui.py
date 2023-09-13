@@ -180,7 +180,7 @@ if __name__ == '__main__':
                         ref_btn = gr.Button('Refresh Models 🔁', variant='primary')
 
                     with gr.Column() as yt_link_col:
-                        song_input = gr.Text(label='Song input', info='Link to a song on YouTube or full path to a local file. For file upload, click the button below.')
+                        song_input = gr.Text(label='Song input', info='Link to a song on YouTube or full path to a local file. For file upload, click the button below. Example: https://www.youtube.com/watch?v=M-mtdN6R3bQ')
                         show_file_upload_button = gr.Button('Upload file instead')
 
                     with gr.Column(visible=False) as file_upload_col:
