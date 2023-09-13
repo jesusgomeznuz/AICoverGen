@@ -1,7 +1,7 @@
 ---
 title: AICoverGen
-emoji: 🦀
-colorFrom: pink
+emoji: 🚀
+colorFrom: red
 colorTo: pink
 sdk: gradio
 sdk_version: 3.44.1
