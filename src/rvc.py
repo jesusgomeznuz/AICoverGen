@@ -82,7 +82,7 @@ class Config:
         else:
             print("No supported N-card found, use CPU for inference")
             self.device = "cpu"
-            self.is_half = True
+            self.is_half = False
             use_fp32_config() # cpu config
 
         if self.n_cpu == 0:
