@@ -172,8 +172,7 @@ if __name__ == '__main__':
 
         gr.Markdown("AI-Cover-Gen-No-UI [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ardha27/AICoverGen-NoUI-Colab/blob/main/CoverGen_No_UI.ipynb)")
         gr.Markdown("Duplicate the space for use in private")
-        "[![Duplicate this Space](https://huggingface.co/datasets/huggingface/badges/raw/main/duplicate-this-space-sm-dark.svg)](https://huggingface.co/spaces/r3gm/AICoverGen?duplicate=true)\n\n"
-        ) 
+        gr.Markdown("[![Duplicate this Space](https://huggingface.co/datasets/huggingface/badges/raw/main/duplicate-this-space-sm-dark.svg)](https://huggingface.co/spaces/r3gm/AICoverGen?duplicate=true)\n\n") 
         gr.Markdown("Duplicate the space for use in private")
         # main tab
         with gr.Tab("Generate"):
